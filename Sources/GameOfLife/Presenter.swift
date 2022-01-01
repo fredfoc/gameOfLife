@@ -7,4 +7,14 @@
 
 import SwiftUI
 
-final class Presenter: ObservableObject {}
+@usableFromInline
+final class Presenter: ObservableObject {
+    @Published var gameIsStarted = false
+
+    private var Model: Model
+
+    @usableFromInline
+    init(Model: Model) {
+        self.Model = Model
+    }
+}

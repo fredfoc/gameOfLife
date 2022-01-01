@@ -15,6 +15,9 @@ public enum Game {
     ///    - y: The number of rows
     @inlinable
     static func create(x _: Int, y _: Int) -> some SwiftUI.View {
-        View()
+        let domain = DependencyContainer.shared.container.resolve(Domain.self)
+        let model = Model(domain: domain)
+        let presenter = Presenter(Model: model)
+        return View(presenter: presenter)
     }
 }
