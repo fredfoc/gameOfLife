@@ -5,7 +5,6 @@
 //  Created by Frederic FAUQUETTE on 31/12/2021.
 //
 
-import Algorithms
 import Combine
 import Foundation
 
@@ -15,14 +14,15 @@ enum State {
     case dead
 }
 
-@usableFromInline
-enum DomainError: Error {
+public enum DomainError: Error {
     case engineWasBroken
 }
 
 @usableFromInline
-protocol Domain {
+protocol Domain: AnyObject {
+    // swiftlint:disable identifier_name
     func createWorld(x: Int, y: Int)
+    // swiftlint:enable identifier_name
     func start()
-    var update: AnyPublisher<[[State]], DomainError> { get }
+    var update: AnyPublisher<[State], DomainError> { get }
 }

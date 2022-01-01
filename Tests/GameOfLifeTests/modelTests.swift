@@ -9,6 +9,21 @@ import Combine
 @testable import GameOfLife
 import XCTest
 
+extension Domain {
+    func createWorld(x _: Int, y _: Int) {}
+    func start() {}
+    var error: AnyPublisher<Void, DomainError> {
+        Fail(error: DomainError.engineWasBroken)
+            .eraseToAnyPublisher()
+    }
+
+    var update: AnyPublisher<[State], DomainError> {
+        Just([State.dead])
+            .setFailureType(to: DomainError.self)
+            .eraseToAnyPublisher()
+    }
+}
+
 final class modelTests: XCTestCase {
     func testModelShouldCallCreateWorldBeforeStartingTheGame() throws {
         // Arrange
@@ -25,10 +40,6 @@ final class modelTests: XCTestCase {
             func start() {
                 startWasCalled = createWasCalled ? true : false
             }
-
-            var update: AnyPublisher<[[State]], DomainError> = Just([[State.dead]])
-                .setFailureType(to: DomainError.self)
-                .eraseToAnyPublisher()
         }
         let mockDomain = MockDomain()
         let model = Model(domain: mockDomain)
@@ -39,7 +50,7 @@ final class modelTests: XCTestCase {
         XCTAssertTrue(mockDomain.startWasCalled)
     }
 
-    func testModelShouldSinkToUpdateBeforeStartingTheGame() throws {
+    func testModelShouldSinkToUpdateAtStart() throws {
         // Arrange
         class MockPublisher<Output>: Publisher {
             var receivedSubscription = false
@@ -57,25 +68,29 @@ final class modelTests: XCTestCase {
         }
 
         class MockDomain: Domain {
-            var publisher = MockPublisher([[State.dead]])
+            var publisher = MockPublisher([State.dead])
 
             init() {}
 
-            func createWorld(x _: Int, y _: Int) {}
-
-            func start() {}
-
-            var update: AnyPublisher<[[State]], DomainError> {
+            var update: AnyPublisher<[State], DomainError> {
                 publisher
                     .eraseToAnyPublisher()
             }
         }
 
         let mockDomain = MockDomain()
-        let model = Model(domain: mockDomain)
         // Act
-        model.start()
+        Model(domain: mockDomain).start()
         // Assert
         XCTAssertTrue(mockDomain.publisher.receivedSubscription)
+    }
+
+    func testGridCellEquatable() throws {
+        // Arrange
+        let cell1 = GridCell(column: 1, row: 1, state: .dead)
+        let cell2 = GridCell(column: 1, row: 1, state: .alive)
+        // Act
+        // Assert
+        XCTAssertEqual(cell1, cell2)
     }
 }

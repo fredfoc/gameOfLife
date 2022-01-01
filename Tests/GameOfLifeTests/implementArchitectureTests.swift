@@ -9,11 +9,7 @@
 import XCTest
 
 final class implementArchitectureTests: XCTestCase {
-    func testLibHasAViewFile() throws {
-        XCTAssertNotNil(View(presenter: Presenter(Model: Model(domain: nil))))
-    }
-
     func testLibHasAGameOfLifeFile() throws {
-        XCTAssertNotNil(Game.create(x: 10, y: 10))
+        XCTAssertNotNil(Game.create(rows: 10, columns: 10))
     }
 }

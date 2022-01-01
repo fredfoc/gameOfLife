@@ -5,7 +5,7 @@ A Swift package to implement a simple Game Of Life in any of your projects.
 
 # Getting Started
 1.    Installation process
-To install this package you can use Cocoapods or Swift Package Manager
+To install this package you use Swift Package Manager
 2.    Software dependencies
 This software has a dependency on Swinject
 
@@ -30,9 +30,18 @@ swift package generate-xcodeproj
 ```
 
 # Let's play
-## log
-
+## display a Game Of Life
+Add GameOfLife package to your project
 ```swift
 import GameOfLife
-GameOfLife.Builder(width: 100, height: 100)
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        Game.create(rows: 30, columns: 20)
+    }
+}
 ```
+If you remove the created view, memory will be cleaned by itself.
+
+See Example for a concrete project.
