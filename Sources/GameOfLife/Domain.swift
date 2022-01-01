@@ -6,17 +6,23 @@
 //
 
 import Algorithms
+import Combine
 import Foundation
 
+@usableFromInline
 enum State {
     case alive
     case dead
 }
 
-struct Domain {
-    func createWorld(x: Int, y: Int) -> [[State]] {
-        Array(repeating: .dead, count: x * y)
-            .chunks(ofCount: x)
-            .map { Array($0) }
-    }
+@usableFromInline
+enum DomainError: Error {
+    case engineWasBroken
+}
+
+@usableFromInline
+protocol Domain {
+    func createWorld(x: Int, y: Int)
+    func start()
+    var update: AnyPublisher<[[State]], DomainError> { get }
 }

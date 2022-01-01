@@ -15,11 +15,12 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-algorithms.git", .upToNextMajor(from: "1.0.0")),
+        .package(name: "Swinject", url: "https://github.com/Swinject/Swinject.git", .upToNextMinor(from: "2.7.0")),
     ],
     targets: [
         .target(
             name: "GameOfLife",
-            dependencies: [.product(name: "Algorithms", package: "swift-algorithms")]
+            dependencies: [.product(name: "Algorithms", package: "swift-algorithms"), "Swinject"]
         ),
         .testTarget(
             name: "GameOfLifeTests",

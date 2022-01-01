@@ -10,15 +10,7 @@ import XCTest
 
 final class implementArchitectureTests: XCTestCase {
     func testLibHasAViewFile() throws {
-        XCTAssertNotNil(View())
-    }
-
-    func testLibHasAPresenterFile() throws {
-        XCTAssertNotNil(Presenter())
-    }
-
-    func testLibHasADomainFile() throws {
-        XCTAssertNotNil(Domain())
+        XCTAssertNotNil(View(presenter: Presenter(Model: Model(domain: nil))))
     }
 
     func testLibHasAGameOfLifeFile() throws {
